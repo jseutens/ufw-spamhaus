@@ -20,7 +20,7 @@ COMBINED="/tmp/drop-edrop.combined"
 # unban old entries
 if [ -f $COMBINED ]; then
     for IP in $( cat $COMBINED ); do
-        ufw delete deny from $IP to any
+        $UFW delete deny from $IP to any
     done
 fi
 
@@ -43,7 +43,7 @@ unlink $FILE2
 
 # ban new entries
 for IP in $( cat $COMBINED ); do
-    ufw insert 1 deny from $IP to any
+    $UFW insert 1 deny from $IP to any
 done
 
 
@@ -55,9 +55,9 @@ FILE3="/tmp/dropv6.lasso";
 COMBINEDv6="/tmp/dropv6.combined"
 
 # unban old entries v6
-if [ -f $COMBINEDv6]; then
+if [ -f $COMBINEDv6 ]; then
     for IP in $( cat $COMBINEDv6); do
-        ufw delete deny from $IP to any
+        $UFW delete deny from $IP to any
     done
 fi
 
@@ -77,5 +77,5 @@ unlink $FILE3
 # check first position of first v6 entry
 v6ruleid=$(sudo ufw status numbered | grep "(v6)" | grep -o "\\[[0-9]*\\]" | grep -o "[0-9]*" | head -n 1)
 for IP in $( cat $COMBINEDv6); do
-    ufw insert $v6ruleid deny from $IP to any
+    $UFW insert $v6ruleid deny from $IP to any
 done
